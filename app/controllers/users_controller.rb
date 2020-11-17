@@ -14,11 +14,7 @@ class UsersController < ApplicationController
       render :new
     end
   end
-  
-  def index
-  end
-  
-  
+
   private
   
   def user_params
