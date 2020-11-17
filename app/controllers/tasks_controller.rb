@@ -1,14 +1,15 @@
 class TasksController < ApplicationController
-  before_action :require_user_loggen_in, only: [:show, :new, :create, :edit, :update, :destroy]
+  before_action :require_user_loggen_in
   before_action :correct_user, only: [:destroy]
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   
   def index
     if logged_in?
-      @task = current_user.tasks.build
       @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(3)
-      @user = @task.user
-      counts(@user)
+      
+      #taskの数をカウント
+      #@user = @task.user
+      #counts(@user)
     end
   end
   
@@ -57,7 +58,9 @@ class TasksController < ApplicationController
   
   def set_task
     @task = current_user.tasks.find_by(id: params[:id])
-    #@task = Task.find(params[:id])
+    unless @task
+      redirect_to root_url
+    end
   end
 
   def task_params
